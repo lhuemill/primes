@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# primes/primes_cmp
+#
+# Copyright 2026 Louis Huemiller Jr.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Removes the 2nd command-line specified primes file, if it is
+# equivalent to the 1st command-line specified primes file.
+# If they are equivalent is determined through the use of
+# "primes_cmp -i".  Where the -i specifies that the a difference
+# in the format of the two primes files is ignored.
+
+primes_cmp -i $1 $2 && rm $2 && echo $2 removed
