@@ -874,3 +874,49 @@ string PrimesFile::format_str(Format format)
 
 	return ss.str();
 }
+
+// The functions mulMod, powerMod, and their derivatives were derived
+// from versions obtained on 10/31/2026, from:
+//
+// https://www.khanacademy.org/computing/computer-science/cryptography/random-algorithms-probability/v/fermat-primality-test-prime-adventure-part-10
+//
+// Unfortunately those versions do not work correctly for exponents near 2^64,
+// and likely any prime greater than 2^63. For example,
+//
+//   powerMod((0x3, 0xffffffffffffffc4, 0xffffffffffffffc5)
+//
+// Returns a value of 4326621740974158673, but it should return a value
+// of 1, because 0xffffffffffffffc5 is the greatest prime less than
+// 2^64. Although this is a significant issue, will use this as the starting
+// point in the creation of a version that likely works correctly.
+unsigned long long primes_util::mulMod(unsigned long long base,
+	unsigned long long exp, unsigned long long mod)
+{
+	unsigned long long res = 0;
+	base %= mod;
+	while (exp > 0) {
+		if (exp % 2 == 1) {
+			res = (res + base) % mod;
+		}
+		base = (base * 2) % mod;
+		exp /= 2;
+	}
+	return res;
+}
+
+// Calculates (base^exp) % mod using binary exponentiation
+unsigned long long primes_util::powerMod(unsigned long long base,
+	unsigned long long exp, unsigned long long mod)
+{
+	unsigned long long res = 1;
+	base %= mod;
+	while (exp > 0) {
+		if (exp % 2 == 1) {
+			res = primes_util::mulMod(res, base, mod);
+		}
+		base = primes_util::mulMod(base, base, mod);
+		exp /= 2;
+	}
+
+	return res;
+}

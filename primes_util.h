@@ -121,6 +121,11 @@ namespace primes_util {
 			bool _current_set = false;
 			sb_t *_sb = NULL;
 	};
+
+	unsigned long long mulMod(unsigned long long base, unsigned long long exp,
+		unsigned long long mod);
+	unsigned long long powerMod(unsigned long long base, unsigned long long exp,
+		unsigned long long mod);
 } // namespace primes_util
 
 #endif //  _PRIMES_UTIL_H_
