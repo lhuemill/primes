@@ -896,9 +896,9 @@ unsigned long long primes_util::mulMod(unsigned long long base,
 	base %= mod;
 	while (exp > 0) {
 		if (exp % 2 == 1) {
-			res = (res + base) % mod;
+			res = ((__uint128_t) res + base) % mod;
 		}
-		base = (base * 2) % mod;
+		base = ((__uint128_t) base * 2) % mod;
 		exp /= 2;
 	}
 	return res;
