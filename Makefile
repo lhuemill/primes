@@ -26,6 +26,7 @@ tools : \
 	./target/primes_cmp \
 	./target/primes_validate_first_n \
 	./target/primes_convert \
+	./target/primes2primes32 \
 
 utilities: \
 	./target/primes_rm2nd_if_equiv \
@@ -70,6 +71,9 @@ testit: ./tests
 
 ./target/primes_convert: ./target/ primes_convert.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
 	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_convert primes_convert.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
+
+./target/primes2primes32: ./target/ primes2primes32.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes2primes32 primes2primes32.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
 
 ./target/primes_rm2nd_if_equiv: ./target/ ./primes_rm2nd_if_equiv ./target/
 	cp ./primes_rm2nd_if_equiv ./target/primes_rm2nd_if_equiv
