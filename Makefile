@@ -79,6 +79,14 @@ testit: ./tests
 	cp ./primes_rm2nd_if_equiv ./target/primes_rm2nd_if_equiv
 	chmod +x ./target/primes_rm2nd_if_equiv
 
+./results/primes0x00000000xxxxxxxx.primes32 : ./results/primes0x00000000xxxxxxxx.primes ./target/primes2primes32
+	mkdir -p ./results/
+	./target/primes2primes32 ./results/primes0x00000000xxxxxxxx.primes ./results/primes0x00000000xxxxxxxx.primes32
+
+./results/primes0x00000000xxxxxxxx.primes : ./target/primes
+	mkdir -p ./results/
+	./target/primes -x -r ./results/primes0x00000000xxxxxxxx.primes 0 0xffffffff
+
 ./target/test_PrimesFile_runlen : ./target/ ./test_PrimesFile_runlen.cxx ./build/primes_util.o
 	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/test_PrimesFile_runlen test_PrimesFile_runlen.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
 

@@ -110,8 +110,6 @@ int main(int argc, char *argv[])
 		dst.set_bit(idx);
 	} while (true);
 
-return 5;
-
 	return 0;
 }
 
