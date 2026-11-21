@@ -192,15 +192,24 @@ int main(int argc, char *argv[])
 					idx = sb_nextset(sb, idx)) {
 					if (display_gap) {
 						if (prev_idx_set) {
-							cout << setw(4) << idx - prev_idx - 1 << " " << idx << endl;
+							cout << setw(4) << idx - prev_idx - 1;
 						} else {
-							cout << "     " << idx << endl;
+							cout << setw(4) << "";
 						}
-					} else {
+						cout << " ";
 						if (!flag_hex) {
 							cout << idx << endl;
 						} else {
-							cout << hex << "0x" << idx << dec << endl;
+							cout << hex << "0x" << idx << endl;
+							cout << dec;
+						}
+					} else {
+
+						if (!flag_hex) {
+							cout << idx << endl;
+						} else {
+							cout << hex << "0x" << idx << endl;
+							cout << dec;
 						}
 					}
 					prev_idx = idx;
@@ -229,6 +238,8 @@ int main(int argc, char *argv[])
 			}
 			if (header_only) { break; }
 
+			sb_idx_t prev_idx;
+			bool prev_idx_set = false;
 			do {
 				uint64_t idx;
 				try {
@@ -238,11 +249,29 @@ int main(int argc, char *argv[])
 					break;
 				}
 		
-				if (!flag_hex) {
-					cout << idx << endl;
+				if (display_gap) {
+					if (prev_idx_set) {
+						cout << setw(4) << idx - prev_idx - 1;
+					} else {
+						cout << setw(4) << "";
+					}
+					cout << " ";
+					if (!flag_hex) {
+						cout << idx << endl;
+					} else {
+						cout << hex << "0x" << idx << endl;
+						cout << dec;
+					}
 				} else {
-					cout << hex << "0x" << idx << dec << endl;
+						if (!flag_hex) {
+							cout << idx << endl;
+						} else {
+							cout << hex << "0x" << idx << endl;
+							cout << dec;
+						}
 				}
+				prev_idx = idx;
+				prev_idx_set = true;
 			} while (true);
 			break;
 		}
