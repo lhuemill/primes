@@ -94,3 +94,11 @@ testit: ./tests
 	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/test_powermod \
 		test_powermod.cxx ./build/primes_util.o \
 		-L ../sparsebit_c/target/lib/ -l sparsebit_c
+
+.PHONY: smoketest
+smoketest: tests
+	./target/test_PrimesFile_runlen
+	./target/test_powermod
+
+.PHONY: presubmit
+presubmit: smoketest
