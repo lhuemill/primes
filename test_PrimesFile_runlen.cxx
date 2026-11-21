@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 {
 	// Create a Primes file with delta from 1 to highest supported
 	// by PRIMESI0_OP_EVEN10x code + 10 more.
-	PrimesFile test_file1(PrimesFile::CREATE, "test_data000",
+	PrimesFile test_file1(PrimesFile::CREATE, "./build/PrimesFile_runlen_test_data000",
           PrimesFile::DELTA);
 	uint64_t current = 0x10;
 	for (size_t delta = 1; delta <= ((1 << 10) * 2) + 10; delta++) {
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
 	test_file1.close();
 
-	PrimesFile test_file2(PrimesFile::READ, "test_data000");
+	PrimesFile test_file2(PrimesFile::READ, "./build/PrimesFile_runlen_test_data000");
 	current = 0x10;
 	for (size_t expected_delta = 1; expected_delta <= ((1 << 10) * 2) + 10;
 		expected_delta++) {
