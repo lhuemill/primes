@@ -226,15 +226,18 @@ int main(int argc, char *argv[])
 		case PrimesFile::DELTA000:
 		case PrimesFile::DELTA: {
 			PrimesFile pfile(PrimesFile::READ, filename);
-			cout << "Format: 0x" << hex << format << dec << endl;
-			if (!flag_hex) {
-				cout << "Start: " << pfile.start() << endl;
-				cout << "End: " << pfile.end() << endl;
-				cout << "Num: " << pfile.num() << endl;
-			} else {
-				cout << "Start: 0x" << hex << pfile.start() << dec << endl;
-				cout << "End: 0x" << hex << pfile.end() << dec << endl;
-				cout << "Num: 0x" << hex << pfile.num() << dec << endl;
+
+			if (!suppress_header) {
+				cout << "Format: 0x" << hex << format << dec << endl;
+				if (!flag_hex) {
+					cout << "Start: " << pfile.start() << endl;
+					cout << "End: " << pfile.end() << endl;
+					cout << "Num: " << pfile.num() << endl;
+				} else {
+					cout << "Start: 0x" << hex << pfile.start() << dec << endl;
+					cout << "End: 0x" << hex << pfile.end() << dec << endl;
+					cout << "Num: 0x" << hex << pfile.num() << dec << endl;
+				}
 			}
 			if (header_only) { break; }
 
