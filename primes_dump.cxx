@@ -188,39 +188,40 @@ int main(int argc, char *argv[])
 			if (sb_anyset(sb)) {
 				sb_idx_t prev_idx;
 				bool prev_idx_set = false;
-				for (sb_idx_t idx = sb_firstset(sb); idx != 0;
-					idx = sb_nextset(sb, idx)) {
-					if (display_gap) {
-						if (prev_idx_set) {
-							cout << setw(4) << idx - prev_idx - 1;
-						} else {
-							cout << setw(4) << "";
+
+				sb_idx_t idx = sb_firstset(sb);
+				do {
+					// So the gap can be calculated when needed, don't display a value
+					// until it becomes the previous value.
+					if (prev_idx_set) {
+						// If needed display the gap between prev_idx and idx.
+						if (display_gap) {
+							cout << setw(4) << idx - prev_idx - 1 << ' ';
 						}
-						cout << " ";
-						if (!flag_hex) {
-							cout << idx << endl;
-						} else {
-							cout << hex << "0x" << idx << endl;
-							cout << dec;
-						}
-					} else {
 
 						if (!flag_hex) {
-							cout << idx << endl;
+							cout << prev_idx << endl;
 						} else {
-							cout << hex << "0x" << idx << endl;
+							cout << hex << "0x" << prev_idx << endl;
 							cout << dec;
 						}
 					}
 					prev_idx = idx;
 					prev_idx_set = true;
+					idx = sb_nextset(sb, idx);
+				} while (idx != 0);
+
+				// Display the find value.
+				if (display_gap) { cout << setw(4) << "" << ' '; }
+				if (!flag_hex) {
+					cout << prev_idx << endl;
+				} else {
+					cout << hex << "0x" << prev_idx << endl;
+					cout << dec;
 				}
 			}
 			break;
 		}
-
-		// case PrimesFile::SBIT:
-		// 	break;
 
 		case PrimesFile::PRIMES32:
 		case PrimesFile::DELTA000:
@@ -251,31 +252,37 @@ int main(int argc, char *argv[])
 				catch (const out_of_range& e) {
 					break;
 				}
-		
-				if (display_gap) {
-					if (prev_idx_set) {
-						cout << setw(4) << idx - prev_idx - 1;
-					} else {
-						cout << setw(4) << "";
+
+				// So the gap can be calculated when needed, don't display a value
+				// until it becomes the previous value.
+				if (prev_idx_set) {
+
+					// If needed display the gap between prev_idx and idx.
+					if (display_gap) {
+						cout << setw(4) << idx - prev_idx - 1 << ' ';
 					}
-					cout << " ";
+
 					if (!flag_hex) {
-						cout << idx << endl;
+						cout << prev_idx << endl;
 					} else {
-						cout << hex << "0x" << idx << endl;
+						cout << hex << "0x" << prev_idx << endl;
 						cout << dec;
 					}
-				} else {
-						if (!flag_hex) {
-							cout << idx << endl;
-						} else {
-							cout << hex << "0x" << idx << endl;
-							cout << dec;
-						}
 				}
+
 				prev_idx = idx;
 				prev_idx_set = true;
 			} while (true);
+
+			// Display the find value.
+			if (display_gap) { cout << setw(4) << "" << ' '; }
+			if (!flag_hex) {
+				cout << prev_idx << endl;
+			} else {
+				cout << hex << "0x" << prev_idx << endl;
+				cout << dec;
+			}
+
 			break;
 		}
 
