@@ -568,7 +568,8 @@ void PrimesFile::set_bit(uint64_t idx)
 		_end = idx;
 	}
 
-	if (_current_set && (idx <= _current)) {
+	if (_current_set && (idx <= _current)
+		&& !((idx == _current) && (_current == _start))) {
 		err_stream << "PrimesFile::set idx <= _current, idx: "
 			<< hex << "0x" << idx
 			<< " _current: " << hex << "0x" << _current << dec;
