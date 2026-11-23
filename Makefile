@@ -48,49 +48,77 @@ testit: ./tests
 	./target/test_PrimesFile_runlen
 	./target/test_powermod
 
-./build/:
+./build/primes_util.o: primes_util.cxx primes_util.h
 	mkdir -p ./build/
+	$(CXX) $(CXXFLAGS) -c -I ../sparsebit_c/ -o ./build/primes_util.o \
+		primes_util.cxx -L ../sparsebit_c/target/lib/ -l sparsebit_c
 
-./target/:
+./target/primes: primes.cxx ./build/primes_util.o \
+	../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
 	mkdir -p ./target/
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes primes.cxx \
+		./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
 
-./build/primes_util.o: ./build/ primes_util.cxx primes_util.h ./target/
-	$(CXX) $(CXXFLAGS) -c -I ../sparsebit_c/ -o ./build/primes_util.o primes_util.cxx -L ../sparsebit_c/target/lib/ -l sparsebit_c
+./target/primes_dump: primes_dump.cxx ./build/primes_util.o \
+	../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
+	mkdir -p ./target/
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_dump \
+		primes_dump.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ \
+		-l sparsebit_c
 
-./target/primes: ./target/ primes.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
-	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes primes.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
+./target/primes_cmp: primes_cmp.cxx ./build/primes_util.o \
+	../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
+	mkdir -p ./target/
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_cmp \
+		primes_cmp.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ \
+		-l sparsebit_c
 
-./target/primes_dump: ./target/ primes_dump.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
-	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_dump primes_dump.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
+./target/primes_validate_first_n: primes_validate_first_n.cxx \
+	./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a \
+	../sparsebit_c/sparsebit_c.h
+	mkdir -p ./target/
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_validate_first_n \
+		primes_validate_first_n.cxx ./build/primes_util.o -L \
+		../sparsebit_c/target/lib/ -l sparsebit_c
 
-./target/primes_cmp: ./target/ primes_cmp.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
-	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_cmp primes_cmp.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
+./target/primes_convert: primes_convert.cxx ./build/primes_util.o \
+	../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
+	mkdir -p ./target/
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_convert \
+		primes_convert.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ \
+		-l sparsebit_c
 
-./target/primes_validate_first_n: ./target/ primes_validate_first_n.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
-	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_validate_first_n primes_validate_first_n.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
+./target/primes2primes32: primes2primes32.cxx ./build/primes_util.o \
+	../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
+	mkdir -p ./target/
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes2primes32 \
+		primes2primes32.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ \
+		-l sparsebit_c
 
-./target/primes_convert: ./target/ primes_convert.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
-	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes_convert primes_convert.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
-
-./target/primes2primes32: ./target/ primes2primes32.cxx ./build/primes_util.o ../sparsebit_c/target/lib/libsparsebit_c.a ../sparsebit_c/sparsebit_c.h
-	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/primes2primes32 primes2primes32.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
-
-./target/primes_rm2nd_if_equiv: ./target/ ./primes_rm2nd_if_equiv ./target/
+./target/primes_rm2nd_if_equiv: ./primes_rm2nd_if_equiv
+	mkdir -p ./target/
 	cp ./primes_rm2nd_if_equiv ./target/primes_rm2nd_if_equiv
 	chmod +x ./target/primes_rm2nd_if_equiv
 
-./results/primes0x00000000xxxxxxxx.primes32 : ./results/primes0x00000000xxxxxxxx.primes ./target/primes2primes32
+./results/primes0x00000000xxxxxxxx.primes32 : \
+	./results/primes0x00000000xxxxxxxx.primes ./target/primes2primes32
 	mkdir -p ./results/
-	./target/primes2primes32 ./results/primes0x00000000xxxxxxxx.primes ./results/primes0x00000000xxxxxxxx.primes32
+	./target/primes2primes32 ./results/primes0x00000000xxxxxxxx.primes \
+		./results/primes0x00000000xxxxxxxx.primes32
 
 ./results/primes0x00000000xxxxxxxx.primes : ./target/primes
 	mkdir -p ./results/
 	./target/primes -x -r ./results/primes0x00000000xxxxxxxx.primes 0 0xffffffff
 
-./target/test_PrimesFile_runlen : ./target/ ./test_PrimesFile_runlen.cxx ./build/primes_util.o
-	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/test_PrimesFile_runlen test_PrimesFile_runlen.cxx ./build/primes_util.o -L ../sparsebit_c/target/lib/ -l sparsebit_c
+./target/test_PrimesFile_runlen : ./test_PrimesFile_runlen.cxx \
+	./build/primes_util.o
+	mkdir -p ./target/
+	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/test_PrimesFile_runlen \
+		test_PrimesFile_runlen.cxx ./build/primes_util.o -L \
+		../sparsebit_c/target/lib/ -l sparsebit_c
 
-./target/test_powermod : ./target/ ./test_powermod.cxx ./build/primes_util.o
+./target/test_powermod : ./test_powermod.cxx ./build/primes_util.o
+	mkdir -p ./target/
 	$(CXX) $(CXXFLAGS) -I ../sparsebit_c/ -o ./target/test_powermod \
 		test_powermod.cxx ./build/primes_util.o \
 		-L ../sparsebit_c/target/lib/ -l sparsebit_c
